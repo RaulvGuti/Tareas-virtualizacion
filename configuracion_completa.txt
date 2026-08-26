@@ -1,0 +1,137 @@
+================================================================
+CONFIGURACION COMPLETA - TUNEL IPSec (Tunnel Mode)
+================================================================
+
+--- R1 ---
+enable
+configure terminal
+hostname R1
+
+interface GigabitEthernet0/0
+ description LAN_A_INTERNA
+ ip address 192.168.10.1 255.255.255.0
+ no shutdown
+
+interface GigabitEthernet0/1
+ description ENLACE_HACIA_INTERNET
+ ip address 200.1.1.1 255.255.255.252
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 200.1.1.2
+
+license boot module c1900 technology-package securityk9
+exit
+write memory
+reload
+
+configure terminal
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha
+ authentication pre-share
+ group 2
+ lifetime 86400
+exit
+
+crypto isakmp key ClaveCompartida123 address 200.2.2.2
+
+crypto ipsec transform-set TS_TUNEL esp-aes esp-sha-hmac
+ mode tunnel
+exit
+
+access-list 100 permit ip 192.168.10.0 0.0.0.255 192.168.20.0 0.0.0.255
+
+crypto map MAPA_VPN 10 ipsec-isakmp
+ set peer 200.2.2.2
+ set transform-set TS_TUNEL
+ match address 100
+exit
+
+interface GigabitEthernet0/1
+ crypto map MAPA_VPN
+exit
+end
+write memory
+
+
+--- R-ISP ---
+enable
+configure terminal
+hostname R-ISP
+
+interface GigabitEthernet0/0
+ description HACIA_R1
+ ip address 200.1.1.2 255.255.255.252
+ no shutdown
+
+interface GigabitEthernet0/1
+ description HACIA_R2
+ ip address 200.2.2.1 255.255.255.252
+ no shutdown
+
+ip route 192.168.10.0 255.255.255.0 200.1.1.1
+ip route 192.168.20.0 255.255.255.0 200.2.2.2
+end
+write memory
+
+
+--- R2 ---
+enable
+configure terminal
+hostname R2
+
+interface GigabitEthernet0/0
+ description LAN_B_INTERNA
+ ip address 192.168.20.1 255.255.255.0
+ no shutdown
+
+interface GigabitEthernet0/1
+ description ENLACE_HACIA_INTERNET
+ ip address 200.2.2.2 255.255.255.252
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 200.2.2.1
+
+license boot module c1900 technology-package securityk9
+exit
+write memory
+reload
+
+configure terminal
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha
+ authentication pre-share
+ group 2
+ lifetime 86400
+exit
+
+crypto isakmp key ClaveCompartida123 address 200.1.1.1
+
+crypto ipsec transform-set TS_TUNEL esp-aes esp-sha-hmac
+ mode tunnel
+exit
+
+access-list 100 permit ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255
+
+crypto map MAPA_VPN 10 ipsec-isakmp
+ set peer 200.1.1.1
+ set transform-set TS_TUNEL
+ match address 100
+exit
+
+interface GigabitEthernet0/1
+ crypto map MAPA_VPN
+exit
+end
+write memory
+
+
+--- Server0 ---
+Pestaña Services -> HTTP -> On
+IP: 192.168.20.10 / 255.255.255.0 / Gateway 192.168.20.1
+
+
+--- Verificacion (en R1) ---
+show crypto isakmp sa
+show crypto ipsec sa
