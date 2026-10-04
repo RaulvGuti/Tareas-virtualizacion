@@ -1,0 +1,17 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: parcial-reaga-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.49.240/32
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: parcial-reaga-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - parcial-reaga-pool

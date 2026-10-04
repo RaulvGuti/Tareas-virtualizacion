@@ -1,0 +1,75 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-nginx
+  namespace: parcial-reaga
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: nginx.reaga.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-nginx
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-apache
+  namespace: parcial-reaga
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: apache.reaga.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-apache
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-whoami
+  namespace: parcial-reaga
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: whoami.reaga.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-whoami
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-hello
+  namespace: parcial-reaga
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: hello.reaga.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-hello
+            port:
+              number: 80
