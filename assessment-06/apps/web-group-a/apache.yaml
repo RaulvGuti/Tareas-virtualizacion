@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-apache
+  namespace: parcial-reaga
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-apache
+  template:
+    metadata:
+      labels:
+        app: web-apache
+    spec:
+      containers:
+      - name: web
+        image: httpd:alpine
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-apache
+  namespace: parcial-reaga
+spec:
+  selector:
+    app: web-apache
+  ports:
+  - port: 80
+    targetPort: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-apache
+  namespace: parcial-reaga
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: apache.reaga.test
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-apache
+            port:
+              number: 80

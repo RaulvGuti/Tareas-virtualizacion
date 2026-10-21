@@ -1,0 +1,9 @@
+global:
+  domain: argocd.reaga.test
+configs:
+  params:
+    server.insecure: true
+dex:
+  enabled: false
+notifications:
+  enabled: false

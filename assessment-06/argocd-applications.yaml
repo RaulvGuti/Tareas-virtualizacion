@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: parcial-web-a
+  namespace: argocd-reaga
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RaulvGuti/Tareas-virtualizacion.git
+    targetRevision: assessment-06
+    path: assessment-06/apps/web-group-a
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: parcial-reaga
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: parcial-web-b
+  namespace: argocd-reaga
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RaulvGuti/Tareas-virtualizacion.git
+    targetRevision: assessment-06
+    path: assessment-06/apps/web-group-b
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: parcial-reaga
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
