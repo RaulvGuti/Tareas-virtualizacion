@@ -649,7 +649,7 @@ After Argo CD detected the new commit, `parcial-web-a` was synchronized automati
 | Change in the repository synchronized by Argo CD | [Step 9](#13-step-9--change-in-the-repository-and-automatic-sync-after-the-change) |
 | All configuration as IaC (YAML), including the Application | `assessment-06/*.yaml` and `assessment-06/apps/` |
 | Screenshots of Argo CD accessed by domain name | `a06-17`, `a06-18`, `a06-32`, `a06-37` |
-| Screenshots of the Applications in Synced and Healthy, before and after the change | `a06-32` (before) and `a06-37` (after) |
+| Screenshots of the Applications in Synced and Healthy, before and after the change | `a06-32` (before), `a06-37` and `a06-38` (after) |
 
 ---
 
