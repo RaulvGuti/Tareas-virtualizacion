@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+  app-logs.json: '{   "uid": "app-logs",   "title": "Application Logs",   "schemaVersion":
+    39,   "version": 1,   "refresh": "10s",   "time": { "from": "now-1h", "to": "now"
+    },   "panels": [     {       "id": 1, "type": "logs", "title": "web-nginx",       "datasource":
+    { "type": "loki", "uid": "loki" },       "gridPos": { "h": 8, "w": 12, "x": 0,
+    "y": 0 },       "targets": [ { "refId": "A", "expr": "{namespace=\"parcial-reaga\",
+    pod=~\"web-nginx.*\"}" } ]     },     {       "id": 2, "type": "logs", "title":
+    "web-apache",       "datasource": { "type": "loki", "uid": "loki" },       "gridPos":
+    { "h": 8, "w": 12, "x": 12, "y": 0 },       "targets": [ { "refId": "A", "expr":
+    "{namespace=\"parcial-reaga\", pod=~\"web-apache.*\"}" } ]     },     {       "id":
+    3, "type": "logs", "title": "web-whoami",       "datasource": { "type": "loki",
+    "uid": "loki" },       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },       "targets":
+    [ { "refId": "A", "expr": "{namespace=\"parcial-reaga\", pod=~\"web-whoami.*\"}"
+    } ]     },     {       "id": 4, "type": "logs", "title": "web-hello",       "datasource":
+    { "type": "loki", "uid": "loki" },       "gridPos": { "h": 8, "w": 12, "x": 12,
+    "y": 8 },       "targets": [ { "refId": "A", "expr": "{namespace=\"parcial-reaga\",
+    pod=~\"web-hello.*\"}" } ]     },     {       "id": 5, "type": "logs", "title":
+    "Traefik",       "datasource": { "type": "loki", "uid": "loki" },       "gridPos":
+    { "h": 8, "w": 24, "x": 0, "y": 16 },       "targets": [ { "refId": "A", "expr":
+    "{namespace=\"traefik\"}" } ]     }   ] }'
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: "1"
+  name: dashboard-app-logs
+  namespace: monitoring-reaga

@@ -1,0 +1,29 @@
+apiVersion: v1
+data:
+  cluster-metrics.json: '{   "uid": "cluster-metrics",   "title": "Cluster Metrics",   "schemaVersion":
+    39,   "version": 1,   "refresh": "30s",   "time": { "from": "now-1h", "to": "now"
+    },   "panels": [     {       "id": 1, "type": "timeseries", "title": "CPU por
+    pod (cores)",       "datasource": { "type": "prometheus", "uid": "prometheus"
+    },       "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },       "targets": [ {
+    "refId": "A", "legendFormat": "{{pod}}",         "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{container!=\"\",container!=\"POD\"}[5m]))"
+    } ]     },     {       "id": 2, "type": "timeseries", "title": "Memoria por pod",       "datasource":
+    { "type": "prometheus", "uid": "prometheus" },       "fieldConfig": { "defaults":
+    { "unit": "bytes" }, "overrides": [] },       "gridPos": { "h": 9, "w": 12, "x":
+    12, "y": 0 },       "targets": [ { "refId": "A", "legendFormat": "{{pod}}",         "expr":
+    "sum by (pod) (container_memory_working_set_bytes{container!=\"\",container!=\"POD\"})"
+    } ]     },     {       "id": 3, "type": "stat", "title": "Pods por estado",       "datasource":
+    { "type": "prometheus", "uid": "prometheus" },       "gridPos": { "h": 8, "w":
+    12, "x": 0, "y": 9 },       "options": { "reduceOptions": { "calcs": ["lastNotNull"]
+    }, "colorMode": "value" },       "targets": [ { "refId": "A", "legendFormat":
+    "{{phase}}",         "expr": "sum by (phase) (kube_pod_status_phase)" } ]     },     {       "id":
+    4, "type": "table", "title": "Pods en Running por namespace",       "datasource":
+    { "type": "prometheus", "uid": "prometheus" },       "gridPos": { "h": 8, "w":
+    12, "x": 12, "y": 9 },       "targets": [ { "refId": "A", "instant": true, "format":
+    "table",         "expr": "sum by (namespace) (kube_pod_status_phase{phase=\"Running\"})"
+    } ]     }   ] }'
+kind: ConfigMap
+metadata:
+  labels:
+    grafana_dashboard: "1"
+  name: dashboard-cluster-metrics
+  namespace: monitoring-reaga

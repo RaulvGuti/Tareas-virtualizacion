@@ -1,0 +1,43 @@
+﻿adminUser: admin
+
+persistence:
+  enabled: false
+
+service:
+  type: ClusterIP
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus-server.monitoring-reaga.svc.cluster.local
+        isDefault: true
+      - name: Loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki.monitoring-reaga.svc.cluster.local:3100
+
+sidecar:
+  dashboards:
+    enabled: true
+    label: grafana_dashboard
+    labelValue: "1"
+    searchNamespace: monitoring-reaga
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: sidecarProvider
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        allowUiUpdate: true
+        options:
+          path: /tmp/dashboards
